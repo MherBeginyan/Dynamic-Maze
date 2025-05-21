@@ -154,6 +154,7 @@ class GameManager:
                 return max(directions, key=lambda x: self.path[-1] == self.player.get_neighbour(x))
 
             return max(directions, key=lambda x: self.path[player_ind-1] == self.player.get_neighbour(x))
+        return None
 
     def get_manhattan_distance(self, cell):
         return abs(cell.row - self.goal.row) + abs(cell.col - self.goal.col)
@@ -342,23 +343,24 @@ class Cell:
     def get_neighbour(self, direction):
         if direction == "U":
             if self.row == 0:
-                return
+                return None
             return game.grid[self.row - 1][self.col]
 
         elif direction == "D":
             if self.row == N_ROW - 1:
-                return
+                return None
             return game.grid[self.row + 1][self.col]
 
         elif direction == "L":
             if self.col == 0:
-                return
+                return None
             return game.grid[self.row][self.col - 1]
 
         elif direction == "R":
             if self.col == N_COL - 1:
-                return
+                return None
             return game.grid[self.row][self.col + 1]
+        return None
 
 
 game = GameManager()
@@ -393,12 +395,3 @@ while running:
     clock.tick(TICKS)
 
 pygame.quit()
-
-# Uncomment to save the results in a csv file after execution
-
-# step_counts.insert(0, 0)
-# np.savetxt(f"steps.csv", np.array(step_counts), delimiter=",")
-
-# nodes_expanded.insert(0, 0)
-# np.savetxt(f"nodes.csv", np.array(nodes_expanded), delimiter=",")
-
