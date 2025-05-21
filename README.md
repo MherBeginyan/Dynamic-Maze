@@ -52,11 +52,6 @@ You can modify the following constants in the script to adjust the behavior:
 - `INITIAL_WALL_CHANGE`: Walls changed during initial maze generation.
 - `TICKS`: Speed of the simulation.
 
-## Saving Results
-Uncomment the lines at the end of the script to save metrics:
-- Steps taken are saved in `steps.csv`.
-- Nodes expanded are saved in `nodes.csv`.
-
 ## Authors
 - **Mher Beginyan**
 - **Sofi Khachatryan**
