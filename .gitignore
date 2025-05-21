@@ -1,0 +1,46 @@
+########################
+#  OS-level junk
+########################
+.DS_Store
+Thumbs.db
+__MACOSX/
+
+########################
+#  Python
+########################
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+dist/
+build/
+# virtual-envs
+venv/
+.venv/
+.env/
+.env*/
+
+########################
+#  R / RStudio
+########################
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+*.Rproj.user/
+
+########################
+#  IDE / Editor metadata
+########################
+.idea/
+.vscode/
+*.iml
+
+########################
+#  Logs, databases, cache
+########################
+*.log
+*.sqlite
+*.db

@@ -1,0 +1,88 @@
+---
+title: "Visualization"
+author: "Mher Beginyan B"
+date: "2024-12-04"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = F, warning = F)
+```
+
+```{r}
+library(ggplot2)
+library(dplyr)
+```
+
+```{r}
+nodes <- read.csv("Records/Expanded Nodes.csv")
+
+ggplot(data = nodes, aes(x=NodesExpanded, color=Algorithm)) +
+  geom_density() +
+  theme_minimal() +
+  labs(title="Distribution of Expanded Nodes", x="Number of Nodes", y="",
+       color = "Algorithm")
+
+```
+
+
+```{r}
+step_counts <- read.csv("Records/Step Counts.csv")
+
+ggplot(data=step_counts[step_counts$MazeSize == "Small" & 
+                          step_counts$WallChanges == "Small",]) +
+  geom_density(aes(x=StepCount, color=Algorithm)) +
+  theme_minimal() +
+  labs(title="Distribution of Step Count across Algorithms", x="Step Count", y="",
+       color = "Algorithm", subtitle = "Original Maze")
+
+
+ggplot(data=step_counts[step_counts$MazeSize == "Large",]) +
+  geom_density(aes(x=StepCount, color=Algorithm)) +
+  theme_minimal() +
+  labs(title="Distribution of Step Count across Algorithms", x="Step Count", y="",
+       color = "Algorithm", subtitle = "Large Maze")
+
+
+ggplot(data=step_counts[step_counts$WallChanges == "Large",]) +
+  geom_density(aes(x=StepCount, color=Algorithm)) +
+  theme_minimal() +
+  labs(title="Distribution of Step Count across Algorithms", x="Step Count", y="",
+       color = "Algorithm", subtitle = "Large Wall Changes") +
+  theme(legend.position = "bottom")
+
+```
+
+```{r}
+manhattan <- step_counts[step_counts$Algorithm == "Manhattan",]
+a_star <- step_counts[step_counts$Algorithm == "A*",]
+d_star <- step_counts[step_counts$Algorithm == "D*",]
+
+steps_for_one_algorithm <- function(df, name) {
+  ggplot() +
+  geom_density(data=df[df$WallChanges == "Small" 
+                              & df$WallChanges == "Small",], 
+               aes(x=StepCount, color="Original Maze")) +
+  geom_density(data=df[df$WallChanges == "Large",], 
+               aes(x=StepCount, color="Large Wall Changes")) +
+    geom_density(data=df[df$MazeSize == "Large",], 
+               aes(x=StepCount, color="Large Maze")) +
+  theme_minimal() +
+  labs(title="Distribution of Step Count", x="Step Count", y="",
+       color = "Maze Type", subtitle = name)
+  }
+
+steps_for_one_algorithm(manhattan, "Manhattan")
+steps_for_one_algorithm(a_star, "A*")
+steps_for_one_algorithm(d_star, "D*")
+```
+
+```{r}
+mean_step_counts <- step_counts %>%
+  group_by(Algorithm, MazeSize, WallChanges) %>%
+  summarise(AverageStepCount = mean(StepCount))
+
+mean_node_counts <- nodes %>%
+  group_by(Algorithm) %>%
+  summarise(AverageNodeCount = mean(NodesExpanded))
+```
